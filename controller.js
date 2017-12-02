@@ -1,8 +1,22 @@
 const Router = require('koa-router');
 const router = new Router();
 const koaBody = require('koa-body');
+const redis = require('redis');
+const bb = require('bluebird');
+const _ = require('lodash');
 
-const {checkPhone, getRandomOTP} = require('util');
+bb.promisifyAll(redis.RedisClient.prototype);
+
+const sms = require('./sms');
+
+client = redis.createClient();
+
+client.on("error", function (err) {
+   console.log("Error " + err);
+});
+
+
+const {checkPhone, getRandomOTP, validOTP} = require('./util');
 
 
 router.get('/whoami', (ctx, next) => {
@@ -20,14 +34,46 @@ router.post('/api/getotp', koaBody(), async(ctx, next) => {
         }
     }
     const otp = getRandomOTP();
-    ctx.body = {
-            status: true
+    try {
+        await client.delAsync(number); 
+        await client.setAsync(number, otp, 'EX', 1200); //OTPs expire after 1200 seconds
+        const resp = await sms.send(number, 'Your Login OTP is ' + otp);
+        ctx.body = {
+            status: true,
+            resp
+        }
+    } catch (error) {
+        ctx.body = {
+            status: false,
+            error
+        }
     }
 });
 
-router.post('/api/verifyotp', koaBody(), function (ctx, next) {
-    ctx.body = {
-        status: true
+router.post('/api/verifyotp', koaBody(), async (ctx, next) => {
+    const {body} = ctx.request;
+    const {number, otp} = body;
+    if (!number || !checkPhone.test(number) || !validOTP(otp)) {
+        ctx.body = {
+            status: false
+        }
+    }
+    try {
+        const resp = await client.getAsync(number);
+        if(resp === _.toString(otp)) {
+            await client.delAsync(number); 
+            ctx.body = {
+                status: true
+            }
+        }
+        ctx.body = {
+            status: false
+        }
+        
+    } catch (error) {
+        ctx.body = {
+            status: false
+        }
     }
 });
 
