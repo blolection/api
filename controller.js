@@ -57,7 +57,8 @@ router.post('/api/verifyotp', koaBody(), async(ctx, next) => {
     const {number, otp} = body;
     if (!number || !checkPhone.test(number) || !validOTP(otp)) {
         ctx.body = {
-            status: false
+            status: false,
+            error: 1
         }
     }
     try {
@@ -87,12 +88,15 @@ router.post('/api/verifyotp', koaBody(), async(ctx, next) => {
             }
         } else {
             ctx.body = {
-                status: false
+                status: false,
+                error: 2
             }
         }
     } catch (error) {
+        console.log(error);
         ctx.body = {
-            status: false
+            status: false,
+            error: 3
         }
     }
 });
