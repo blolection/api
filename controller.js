@@ -111,8 +111,8 @@ router.get('/api/candidates', async(ctx, next) => {
 
 router.post('/api/candidate', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
-    const {number, name, image, symbol, description} = body;
-    if (!number || !checkPhone.test(number) || !name || !image || !symbol || !description) {
+    const {uid, name, image, symbol, description} = body;
+    if (!uid || !checkPhone.test(uid) || !name || !image || !symbol || !description) {
         ctx.body = {
             status: false
         }
@@ -125,11 +125,12 @@ router.post('/api/candidate', koaBody(), async (ctx, next) => {
             },
             body: {
                 '$class': 'org.bhanu.io.Candidate',
-                "phone": number,
+                "uid": uid,
                 "name": name,
                 "image": image,
                 "symbol": symbol,
-                "description": description
+                "description": description,
+                "votes": 0
             },
             json: true
         };
@@ -143,7 +144,7 @@ router.post('/api/candidate', koaBody(), async (ctx, next) => {
 
 router.post('/api/vote', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
-    const {number, token, candidate} = body;
+    const {number, token, uid} = body;
 
     if (!number || !checkPhone.test(number) || !token || !candidate || !checkPhone.test(candidate)) {
         ctx.body = {
@@ -161,7 +162,7 @@ router.post('/api/vote', koaBody(), async (ctx, next) => {
                 body: {
                     '$class': 'org.bhanu.io.CommitVote',
                     "voter": `org.bhanu.io.User#${number}`,
-                    "contestant": `org.bhanu.io.User#${candidate}`,
+                    "contestant": `org.bhanu.io.Candidate#${candidate}`,
                 },
                 json: true
             };
