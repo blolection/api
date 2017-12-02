@@ -146,7 +146,7 @@ router.post('/api/vote', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
     const {number, token, uid} = body;
 
-    if (!number || !checkPhone.test(number) || !token || !candidate || !checkPhone.test(candidate)) {
+    if (!number || !checkPhone.test(number) || !token || !uid || !checkPhone.test(uid)) {
         ctx.body = {
             status: false
         }
@@ -162,7 +162,7 @@ router.post('/api/vote', koaBody(), async (ctx, next) => {
                 body: {
                     '$class': 'org.bhanu.io.CommitVote',
                     "voter": `org.bhanu.io.User#${number}`,
-                    "contestant": `org.bhanu.io.Candidate#${candidate}`,
+                    "contestant": `org.bhanu.io.Candidate#${uid}`,
                 },
                 json: true
             };
