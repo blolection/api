@@ -118,34 +118,27 @@ router.post('/api/candidate', koaBody(), async (ctx, next) => {
             status: false
         }
     } else {
-        const resp = await client.getAsync(number);
-        if (resp === _.toString(otp)) {
-            const options = {
-                method: 'POST',
-                url: 'http://localhost:3000/api/Candidate',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: {
-                    '$class': 'org.bhanu.io.Candidate',
-                    "phone": number,
-                    "name": name,
-                    "image": image,
-                    "symbol": symbol
-                },
-                json: true
-            };
-            const makeCandidate = await rp(options);
-            ctx.body = {
-                status: true,
-                token,
-                makeCandidate
-            }
-        } else {
-            ctx.body = {
-                status: false
-            }
-         }
+        const options = {
+            method: 'POST',
+            url: 'http://localhost:3000/api/Candidate',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: {
+                '$class': 'org.bhanu.io.Candidate',
+                "phone": number,
+                "name": name,
+                "image": image,
+                "symbol": symbol
+            },
+            json: true
+        };
+        const makeCandidate = await rp(options);
+        ctx.body = {
+            status: true,
+            token,
+            makeCandidate
+        }
     }
 });
 
