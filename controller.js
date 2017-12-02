@@ -109,7 +109,7 @@ router.get('/api/candidates', async(ctx, next) => {
     }
 });
 
-router.post('/api/candidate', koaBody(), function (ctx, next) {
+router.post('/api/candidate', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
     const {number, name, image, symbol} = body;
 
@@ -144,7 +144,7 @@ router.post('/api/candidate', koaBody(), function (ctx, next) {
     }
 });
 
-router.post('/api/vote', koaBody(), function (ctx, next) {
+router.post('/api/vote', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
     const {number, token, candidate} = body;
 
