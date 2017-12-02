@@ -111,9 +111,8 @@ router.get('/api/candidates', async(ctx, next) => {
 
 router.post('/api/candidate', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
-    const {number, name, image, symbol} = body;
-
-    if (!number || !checkPhone.test(number) || !name || !image || !symbol) {
+    const {number, name, image, symbol, description} = body;
+    if (!number || !checkPhone.test(number) || !name || !image || !symbol || !description) {
         ctx.body = {
             status: false
         }
@@ -129,14 +128,14 @@ router.post('/api/candidate', koaBody(), async (ctx, next) => {
                 "phone": number,
                 "name": name,
                 "image": image,
-                "symbol": symbol
+                "symbol": symbol,
+                "description": description
             },
             json: true
         };
         const makeCandidate = await rp(options);
         ctx.body = {
             status: true,
-            token,
             makeCandidate
         }
     }
