@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^2.2.1",
     "bluebird": "^3.5.1",
     "dotenv-safe": "^4.0.4",
     "koa": "^2.4.1",
@@ -17,6 +18,9 @@
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
     "msg91-promise": "^0.1.2",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "uuid": "^3.1.0"
   }
 }
