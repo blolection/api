@@ -1,4 +1,6 @@
-const checkPhone = new RegExp("^[7-9][0-9]{9}$");
+const checkPhone = (num) => {
+   return _.toString(num).length === 10
+};
 const _ = require('lodash');
 const validOTP = num => {
     return _.isNumber(num) && _.toString(num).length === 5 ;

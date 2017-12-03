@@ -30,7 +30,7 @@ router.get('/whoami', (ctx, next) => {
 router.post('/api/getotp', koaBody(), async(ctx, next) => {
     const {body} = ctx.request;
     const {number} = body;
-    if (!number || !checkPhone.test(number)) {
+    if (!number || !checkPhone(number)) {
         ctx.body = {
             status: false
         }
@@ -55,7 +55,7 @@ router.post('/api/getotp', koaBody(), async(ctx, next) => {
 router.post('/api/verifyotp', koaBody(), async(ctx, next) => {
     const {body} = ctx.request;
     const {number, otp} = body;
-    if (!number || !checkPhone.test(number) || !validOTP(otp)) {
+    if (!number || !checkPhone(number) || !validOTP(otp)) {
         ctx.body = {
             status: false,
             error: 1
@@ -116,7 +116,7 @@ router.get('/api/candidates', async(ctx, next) => {
 router.post('/api/candidate', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
     const {uid, name, image, symbol, description} = body;
-    if (!uid || !checkPhone.test(uid) || !name || !image || !symbol || !description) {
+    if (!uid || !checkPhone(uid) || !name || !image || !symbol || !description) {
         ctx.body = {
             status: false
         }
@@ -150,7 +150,7 @@ router.post('/api/vote', koaBody(), async (ctx, next) => {
     const {body} = ctx.request;
     const {number, token, uid} = body;
 
-    if (!number || !checkPhone.test(number) || !token || !uid || !checkPhone.test(uid)) {
+    if (!number || !checkPhone(number) || !token || !uid || !checkPhone(uid)) {
         ctx.body = {
             status: false
         }
