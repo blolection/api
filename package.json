@@ -16,6 +16,7 @@
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
     "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
     "lodash": "^4.17.4",
     "msg91-promise": "^0.1.2",
     "redis": "^2.8.0",
